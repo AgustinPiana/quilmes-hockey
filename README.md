@@ -11,7 +11,7 @@ npm run dev                   # genera y sirve en http://localhost:4321
 
 | Qué | Archivo |
 | --- | --- |
-| Links, redes, contacto, sedes, sponsors, comisión, aranceles | `content/sitio.mjs` |
+| Links, trámites del pie, redes, contacto, sedes, sponsors, federaciones, comisión, aranceles | `content/sitio.mjs` |
 | Novedades (la primera de la lista es la destacada) | `content/novedades.mjs` |
 | Línea de tiempo, olímpicos y seleccionados | `content/historia.mjs` |
 | Galería de fotos | `content/fotos.mjs` (fotos en `src/img/`) |
@@ -30,3 +30,10 @@ Fixture, resultados y posiciones se cargan en el navegador desde el JSON que gen
 `vercel.json` ya define el build (`node scripts/build.mjs`), la carpeta `dist` y las URLs sin `.html`. También redirige las direcciones del sitio anterior (`/historia.html`, `/institucional.html`, los PDF, etc.) para no perder posicionamiento en Google.
 
 El dominio que se usa en canonical, sitemap y miniaturas está en `sitio.url` (`content/sitio.mjs`).
+
+## Publicación (Hostinger)
+
+1. Correr `node scripts/build.mjs`.
+2. Subir **el contenido** de `dist/` (no la carpeta) a `public_html`, incluido el archivo oculto `.htaccess`.
+
+El `.htaccess` hace lo mismo que `vercel.json`: direcciones sin `.html`, redirecciones del sitio anterior, HTTPS con `www`, página 404 y caché de imágenes.

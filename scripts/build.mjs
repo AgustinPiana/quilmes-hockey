@@ -82,7 +82,6 @@ const nav = [
   { url: '/club', texto: 'El club' },
   { url: '/historia', texto: 'Historia' },
   { url: '/fotos', texto: 'Fotos' },
-  { url: '/sponsors', texto: 'Sponsors' },
   { url: '/club#contacto', texto: 'Contacto' },
 ];
 const inscripcion = accesos.find((a) => a.destacado);
@@ -133,38 +132,33 @@ function pie() {
   return `
 <footer class="pie">
   <div class="ancho">
-    <div class="pie-top">
-      <a class="pie-marca" href="/">${escudo()}<span>Quilmes Atlético Club<strong>Hockey</strong></span></a>
-      <p class="pie-lema">Hockey cervecero desde 1911.</p>
-      ${botonesRedes('redes redes-pie')}
-    </div>
     <div class="pie-grilla">
-      ${contacto.sedes
-        .map(
-          (s) => `<div>
-        <h3>${s.nombre}</h3>
-        <p>${s.direccion}</p>
-        ${s.horario ? `<p class="pie-gris">${s.horario}</p>` : ''}
-        ${s.tel ? `<p>Tel. ${s.tel}</p>` : ''}
-        <a class="pie-mapa" href="${s.mapa}" target="_blank" rel="noopener">Cómo llegar ${icono('externo', 'ico ico-chico')}</a>
-      </div>`
-        )
-        .join('')}
+      <div class="pie-club">
+        <a class="pie-marca" href="/">${escudo()}<span>Quilmes Atlético Club<strong>Hockey</strong></span></a>
+        ${botonesRedes('redes redes-pie')}
+      </div>
+      <div>
+        <h3>Sedes</h3>
+        ${contacto.sedes
+          .map((s) => `<p><a href="${s.mapa}" target="_blank" rel="noopener"><strong>${s.nombre}</strong> · ${s.direccion}</a></p>`)
+          .join('')}
+      </div>
       <div>
         <h3>Contacto</h3>
         ${contacto.emails.map((e) => `<p><a href="mailto:${e}">${e}</a></p>`).join('')}
-        ${contacto.telefonos.map((t) => `<p><a href="tel:${t.tel}">${t.texto}</a></p>`).join('')}
+        <p>${contacto.telefonos.map((t) => `<a href="tel:${t.tel}">${t.texto}</a>`).join(' · ')}</p>
+      </div>
+      <div>
+        <h3>Trámites</h3>
+        <ul class="pie-tramites">
+          ${accesos.map((a) => `<li><a href="${a.url}"${enlaceAttrs(a.url)}>${esc(a.titulo)}</a></li>`).join('')}
+        </ul>
       </div>
     </div>
-    <div class="pie-links">
-      <ul>
-        ${nav.map((n) => `<li><a href="${n.url}">${n.texto}</a></li>`).join('')}
-      </ul>
-      <ul>
-        ${federaciones.map((f) => `<li><a href="${f.url}" target="_blank" rel="noopener" title="${esc(f.nombre)}">${f.sigla}</a></li>`).join('')}
-      </ul>
+    <div class="pie-legal">
+      <p>© ${anio} Subcomisión de Hockey · Quilmes Atlético Club</p>
+      <a href="https://keep-ds.com" target="_blank" rel="noopener">Powered by <b>Keep</b></a>
     </div>
-    <p class="pie-legal">© ${anio} Subcomisión de Hockey · Quilmes Atlético Club</p>
   </div>
 </footer>`;
 }

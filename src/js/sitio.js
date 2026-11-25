@@ -32,6 +32,33 @@
     sombra();
   }
 
+  // ---------- Carrusel de la portada ----------
+  const hero = $('[data-hero]');
+  if (hero) {
+    const fotos = $$('.hero-foto', hero);
+    const puntos = $$('[data-ir]', hero);
+    const epi = $('[data-epigrafe]', hero);
+    let i = 0;
+    let reloj;
+    const ir = (n) => {
+      i = (n + fotos.length) % fotos.length;
+      fotos.forEach((f, k) => f.classList.toggle('activa', k === i));
+      puntos.forEach((b, k) => (k === i ? b.setAttribute('aria-current', 'true') : b.removeAttribute('aria-current')));
+      epi.textContent = fotos[i].dataset.texto;
+      const sig = $('img', fotos[(i + 1) % fotos.length]);
+      if (sig) sig.loading = 'eager';
+    };
+    const andar = () => {
+      clearInterval(reloj);
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) reloj = setInterval(() => ir(i + 1), 6000);
+    };
+    puntos.forEach((b) => b.addEventListener('click', () => { ir(+b.dataset.ir); andar(); }));
+    document.addEventListener('visibilitychange', () => (document.hidden ? clearInterval(reloj) : andar()));
+    const primera = $('img', fotos[1]);
+    if (primera) primera.loading = 'eager';
+    andar();
+  }
+
   // ---------- Pestañas (partidos y aranceles) ----------
   function activarPestanas(lista, alCambiar) {
     const tabs = $$('[role="tab"]', lista);
@@ -148,47 +175,44 @@
     const secciones = (datos.secciones || []).filter((s) => nombres[s.id]).sort((a, b) => orden.indexOf(a.id) - orden.indexOf(b.id));
     const ahora = Date.now();
 
-    // Próximo partido (portada)
+    // Próximo partido (sección de equipos de la portada)
     const prox = $('[data-proximo]');
     if (prox) {
-      const todos = secciones
-        .flatMap((s) => s.partidos.filter((p) => !p.jugado && new Date(p.fecha).getTime() > ahora - 3 * 3600e3).map((p) => ({ ...p, equipo: s.id })))
-        .sort((a, b) => a.fecha.localeCompare(b.fecha));
-      const p = todos[0];
+      const p = secciones
+        .flatMap((s) => s.partidos.filter((x) => !x.jugado && new Date(x.fecha).getTime() > ahora - 3 * 3600e3).map((x) => ({ ...x, equipo: s.id })))
+        .sort((a, b) => a.fecha.localeCompare(b.fecha))[0];
       if (p) {
         const f = new Date(p.fecha);
-        prox.innerHTML = `<p class="kicker">Próximo partido</p>
-          <p class="hp-equipo">${esc(nombres[p.equipo])} · ${esc(p.ronda || '')}</p>
-          <div class="hp-cruce">
-            <div class="hp-club">${escudoImg(p.escudoLocal)}<span>${titulo(p.local)}</span></div>
-            <span class="hp-vs">vs</span>
-            <div class="hp-club">${escudoImg(p.escudoVisitante)}<span>${titulo(p.visitante)}</span></div>
-          </div>
-          <p class="hp-fecha"><strong>${fmtDiaLargo.format(f)}</strong><span>${fmtHora.format(f)} h · ${p.esLocal ? 'Local' : 'Visitante'}</span></p>
-          <a class="hp-mas" href="/partidos#${p.equipo}">Fixture completo</a>`;
-      } else {
-        prox.innerHTML = `<p class="kicker">Temporada 2026</p><p class="hp-vacio">No hay partidos programados por ahora. Mirá cómo terminaron los torneos.</p><a class="hp-mas" href="/partidos">Ver posiciones</a>`;
+        prox.innerHTML = `<p class="proximo-tit">Próximo partido</p>
+          <p class="proximo-eq">${esc(nombres[p.equipo])}<span>${esc(p.ronda || '')}</span></p>
+          <p class="proximo-cruce">${escudoImg(p.escudoLocal)}<strong>${titulo(p.local)}</strong><em>vs</em><strong>${titulo(p.visitante)}</strong>${escudoImg(p.escudoVisitante)}</p>
+          <p class="proximo-dia">${fmtDiaLargo.format(f)} · ${fmtHora.format(f)} h<span>${p.esLocal ? 'Local' : 'Visitante'}</span></p>`;
+        prox.hidden = false;
       }
     }
 
-    // Últimos resultados (banda)
-    const res = $('[data-resultados] .res-lista');
-    if (res) {
+    // Últimos resultados (barra en movimiento)
+    const pista = $('[data-resultados]');
+    if (pista) {
       const items = secciones
-        .map((s) => {
-          const p = s.partidos.filter((x) => x.jugado).sort((a, b) => b.fecha.localeCompare(a.fecha))[0];
-          if (!p) return '';
+        .flatMap((s) => s.partidos.filter((x) => x.jugado).sort((a, b) => b.fecha.localeCompare(a.fecha)).slice(0, 3).map((x) => ({ ...x, equipo: s.id })))
+        .sort((a, b) => b.fecha.localeCompare(a.fecha))
+        .map((p) => {
           const r = resultado(p);
           const rival = p.esLocal ? p.visitante : p.local;
           const nuestro = p.esLocal ? p.gl : p.gv;
           const suyo = p.esLocal ? p.gv : p.gl;
-          return `<a class="res-item res-${r}" href="/partidos#${s.id}" style="text-decoration:none">
-            <small>${esc(nombres[s.id])} · ${fmtDia.format(new Date(p.fecha))}</small>
-            <p>Quilmes <b>${nuestro}–${suyo}</b> <span>${titulo(rival)}</span></p>
-          </a>`;
+          return `<a class="tk-item tk-${r}" href="/partidos#${p.equipo}"><small>${esc(nombres[p.equipo])} · ${fmtDia.format(new Date(p.fecha))}</small><span>Quilmes</span><b>${nuestro}–${suyo}</b><span>${titulo(rival)}</span></a>`;
         })
         .join('');
-      res.innerHTML = items || '<p class="res-vacio">Sin resultados por ahora.</p>';
+      if (items) {
+        pista.innerHTML = `<div class="tk-cinta">${items}</div><div class="tk-cinta" aria-hidden="true">${items.replace(/<a /g, '<a tabindex="-1" ')}</div>`;
+        const ancho = $('.tk-cinta', pista).scrollWidth;
+        pista.style.setProperty('--dur', Math.max(25, Math.round(ancho / 55)) + 's');
+        pista.classList.add('andando');
+      } else {
+        pista.innerHTML = '<p class="ticker-vacio">Sin resultados por ahora.</p>';
+      }
     }
 
     // Tarjetas de equipos (portada)
@@ -225,10 +249,8 @@
   });
 
   function falla() {
-    const prox = $('[data-proximo]');
-    if (prox) prox.innerHTML = `<p class="kicker">Fixture</p><p class="hp-vacio">No pudimos cargar los partidos. Consultalos en Buenos Aires Hockey.</p><a class="hp-mas" href="https://buenosaireshockey.ar/" target="_blank" rel="noopener">Ir a la AHBA</a>`;
-    const res = $('[data-resultados] .res-lista');
-    if (res) res.innerHTML = '<p class="res-vacio">Resultados no disponibles por el momento.</p>';
+    const pista = $('[data-resultados]');
+    if (pista) pista.innerHTML = '<p class="ticker-vacio">Resultados no disponibles por el momento.</p>';
     $$('[data-panel]').forEach((el) => (el.innerHTML = '<p class="cargando">No pudimos cargar los partidos. Probá de nuevo en unos minutos o consultá <a href="https://buenosaireshockey.ar/" target="_blank" rel="noopener">buenosaireshockey.ar</a>.</p>'));
   }
 
@@ -311,32 +333,13 @@
     })
   );
 
-  // ---------- Formulario de sponsors (abre el correo) ----------
-  const form = $('[data-form-sponsor]');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const d = Object.fromEntries(new FormData(form));
-      const asunto = `Quiero ser sponsor del hockey - ${d.empresa}`;
-      const cuerpo = [
-        `Nombre: ${d.nombre}`,
-        `Empresa: ${d.empresa}`,
-        `Email: ${d.email}`,
-        d.telefono ? `Teléfono: ${d.telefono}` : '',
-        '',
-        d.mensaje || '',
-      ].filter((l, i) => l || i === 4).join('\n');
-      location.href = `mailto:${form.dataset.destino}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
-    });
-  }
-
   // ---------- Aparición al hacer scroll ----------
   if ('IntersectionObserver' in window) {
     const obs = new IntersectionObserver(
       (ent) => ent.forEach((x) => x.isIntersecting && (x.target.classList.add('visible'), obs.unobserve(x.target))),
       { rootMargin: '0px 0px -8% 0px' }
     );
-    $$('.sec-titulo, .nota, .equipo, .figura, .hito, .sede, .acceso, .mosaico-item').forEach((el) => {
+    $$('.sec-titulo, .nota, .equipo, .figura, .hito, .sede, .mosaico-item').forEach((el) => {
       if (el.getBoundingClientRect().top > innerHeight) {
         el.classList.add('aparece');
         obs.observe(el);

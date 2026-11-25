@@ -47,13 +47,13 @@ export const contacto = {
 
 // Redes. Si una queda vacía, no se muestra.
 export const redes = [
-  { id: 'instagram', nombre: 'Instagram', url: '' }, // TODO: completar con la cuenta oficial
+  { id: 'instagram', nombre: 'Instagram', url: 'https://www.instagram.com/quilmeshockeyoficial/', usuario: '@quilmeshockeyoficial' },
   { id: 'facebook', nombre: 'Facebook', url: 'https://www.facebook.com/QACHOCKEY' },
   { id: 'x', nombre: 'X', url: 'https://twitter.com/HockeyQuilmesAC' },
   { id: 'youtube', nombre: 'YouTube', url: 'https://www.youtube.com/channel/UC1nO_D4mENQtxK5zKvy3Lvw' },
 ];
 
-// Los botones de acceso que tenía la portada del sitio anterior.
+// Los botones de acceso que tenía la portada del sitio anterior (se muestran en el pie de página).
 export const accesos = [
   { titulo: 'Inscripción 2026', bajada: 'Formulario para nuevas jugadoras y jugadores', url: 'https://docs.google.com/forms/d/e/1FAIpQLSdRlVc0gEMSrEAKok8-1fYhCY09HwEWtayYDMmTqoPK0zAgzA/viewform', destacado: true },
   { titulo: 'Asociate al club', bajada: 'Hacete socio del Quilmes A.C. online', url: 'https://quilmesaclub.accessfan.ar/' },
@@ -66,10 +66,10 @@ export const accesos = [
 ];
 
 export const federaciones = [
-  { sigla: 'AHBA', nombre: 'Asociación de Hockey de Buenos Aires', url: 'https://buenosaireshockey.ar/' },
-  { sigla: 'CAH', nombre: 'Confederación Argentina de Hockey', url: 'http://www.cahockey.org.ar/' },
-  { sigla: 'FIH', nombre: 'Federación Internacional de Hockey', url: 'https://www.fih.hockey/' },
-  { sigla: 'AAAH', nombre: 'Asociación Argentina de Árbitros de Hockey', url: 'http://aaahockey.org/' },
+  { sigla: 'AHBA', nombre: 'Asociación de Hockey de Buenos Aires', url: 'https://buenosaireshockey.ar/', logo: '/img/federaciones/ahba.png' },
+  { sigla: 'CAH', nombre: 'Confederación Argentina de Hockey', url: 'https://www.cahockey.org.ar/', logo: '/img/federaciones/cah.png' },
+  { sigla: 'FIH', nombre: 'Federación Internacional de Hockey', url: 'https://www.fih.hockey/', logo: '/img/federaciones/fih.svg' },
+  { sigla: 'AAAH', nombre: 'Asociación Argentina de Árbitros de Hockey', url: 'https://aaahockey.org/', logo: '/img/federaciones/aaah.png' },
 ];
 
 // Sponsors actuales. logo: ruta dentro de /img/sponsors.

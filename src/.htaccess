@@ -1,0 +1,51 @@
+# Configuración para hosting Apache / LiteSpeed (Hostinger)
+Options -Indexes -MultiViews
+DirectorySlash Off
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Forzar HTTPS y www
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
+RewriteRule ^ https://www.%1%{REQUEST_URI} [R=301,L]
+
+# Direcciones del sitio anterior
+RewriteRule ^index\.html$ / [R=301,L]
+RewriteRule ^institucional\.html$ /club [R=301,L]
+RewriteRule ^aranceles\.html$ /club#aranceles [R=301,NE,L]
+RewriteRule ^(fotos-2022|imagenes-2022)\.html$ /fotos [R=301,L]
+RewriteRule ^Evalu23\.pdf$ /docs/evaluacion-2023.pdf [R=301,L]
+RewriteRule ^REGLAMENTO2026\.pdf$ /docs/reglamento-interno-2026.pdf [R=301,L]
+RewriteRule ^sponsors/?$ /#sponsors [R=301,NE,L]
+
+# Quitar .html de las direcciones
+RewriteCond %{THE_REQUEST} \s/+([^?\s]+?)\.html[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# Quitar barra final
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+# Servir /pagina desde pagina.html
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.+?)$ $1.html [L]
+</IfModule>
+
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/jpeg "access plus 1 year"
+ExpiresByType image/png "access plus 1 year"
+ExpiresByType image/svg+xml "access plus 1 year"
+ExpiresByType font/woff2 "access plus 1 year"
+ExpiresByType text/css "access plus 1 year"
+ExpiresByType application/javascript "access plus 1 year"
+ExpiresByType text/javascript "access plus 1 year"
+ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml application/xml
+</IfModule>
