@@ -1,0 +1,20 @@
+{
+  "buildCommand": "node scripts/build.mjs",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/institucional.html", "destination": "/club", "permanent": true },
+    { "source": "/aranceles.html", "destination": "/club#aranceles", "permanent": true },
+    { "source": "/historia.html", "destination": "/historia", "permanent": true },
+    { "source": "/fotos-2022.html", "destination": "/fotos", "permanent": true },
+    { "source": "/imagenes-2022.html", "destination": "/fotos", "permanent": true },
+    { "source": "/Evalu23.pdf", "destination": "/docs/evaluacion-2023.pdf", "permanent": true },
+    { "source": "/REGLAMENTO2026.pdf", "destination": "/docs/reglamento-interno-2026.pdf", "permanent": true }
+  ],
+  "headers": [
+    { "source": "/(img|fonts)/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] },
+    { "source": "/(css|js)/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] }
+  ]
+}
