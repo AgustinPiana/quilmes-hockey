@@ -246,6 +246,7 @@ ${encabezado(p.nav)}
 ${p.cuerpo}
 </main>
 ${pie()}
+${contacto.whatsapp ? `<a class="wa-flotante" href="https://wa.me/${contacto.whatsapp.numero}?text=${encodeURIComponent(contacto.whatsapp.mensaje)}" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp">${icono('whatsapp')}</a>` : ''}
 <script>window.DATOS_PARTIDOS=${JSON.stringify(sitio.datosPartidos)};</script>
 <script src="/js/sitio.js?v=${version}" defer></script>
 </body>

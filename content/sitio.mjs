@@ -12,6 +12,8 @@ export const sitio = {
 };
 
 export const contacto = {
+  // Botón flotante de WhatsApp: número en formato internacional, sin + ni espacios.
+  whatsapp: { numero: '541142246404', mensaje: 'Hola, quería consultar por el hockey de Quilmes.' },
   emails: ['quilmeshockey1911@gmail.com', 'administracion@hockeyquilmesac.com.ar'],
   telefonos: [
     { texto: '(011) 4224-6404', tel: '+541142246404' },
