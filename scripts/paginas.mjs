@@ -88,6 +88,7 @@ export function paginas({ sitio, contacto, accesos, federaciones, sponsors, nove
     <div class="hero-pie">
       <div class="hero-btns">
         <a class="btn btn-blanco" href="${accesos[0].url}" target="_blank" rel="noopener">Inscribite 2026 ${icono('flecha')}</a>
+        <a class="btn btn-linea" href="https://quilmesaclub.accessfan.ar/" target="_blank" rel="noopener">Asociate</a>
       </div>
       <div class="hero-control">
         <p class="hero-epigrafe" data-epigrafe>${esc(portadas[0].texto)}</p>
