@@ -82,12 +82,12 @@ export function paginas({ sitio, contacto, accesos, federaciones, sponsors, nove
       .join('')}
   </div>
   <div class="ancho hero-in">
-    <p class="kicker kicker-claro">Quilmes Atlético Club · Desde 1911</p>
-    <h1>Hockey<br>cervecero</h1>
+    <p class="kicker kicker-claro">Hockey · Desde 1911</p>
+    <h1>Quilmes<br>Atlético Club</h1>
+    <p class="hero-bajada">Damas y caballeros, de la escuelita a primera. Más de cien años jugando al hockey en Quilmes.</p>
     <div class="hero-pie">
       <div class="hero-btns">
         <a class="btn btn-blanco" href="${accesos[0].url}" target="_blank" rel="noopener">Inscribite 2026 ${icono('flecha')}</a>
-        <a class="btn btn-linea" href="/partidos">Partidos y posiciones</a>
       </div>
       <div class="hero-control">
         <p class="hero-epigrafe" data-epigrafe>${esc(portadas[0].texto)}</p>
@@ -97,13 +97,12 @@ export function paginas({ sitio, contacto, accesos, federaciones, sponsors, nove
   </div>
 </section>
 
-<section class="ticker" aria-label="Últimos resultados">
-  <p class="ticker-tit">Resultados</p>
-  <div class="ticker-pista" data-resultados><p class="ticker-vacio">Cargando resultados…</p></div>
-</section>
-
-<section class="sec sec-gris">
+<section class="sec sec-novedades">
   <div class="ancho">
+    <div class="ticker" aria-label="Últimos resultados">
+      <p class="ticker-tit">Resultados</p>
+      <div class="ticker-pista" data-resultados><p class="ticker-vacio">Cargando resultados…</p></div>
+    </div>
     ${titulo('Novedades', 'Lo último del hockey', `<a class="ver-todo" href="/novedades">Todas las novedades ${icono('flecha')}</a>`)}
     <div class="notas-inicio">
       ${tarjetaNota(destacada, { grande: true })}
