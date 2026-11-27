@@ -1,8 +1,52 @@
 (() => {
   'use strict';
-  document.documentElement.classList.add('js');
+  const html = document.documentElement;
+  html.classList.add('js');
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+
+  // ---------- Intro de hockey (una vez por visita) ----------
+  const intro = $('[data-intro]');
+  const listo = () => html.classList.add('listo');
+  if (intro && !html.classList.contains('sin-intro')) {
+    try { sessionStorage.setItem('qh-intro', '1'); } catch {}
+    let hecho = false;
+    const salir = () => {
+      if (hecho) return;
+      hecho = true;
+      intro.classList.add('saliendo');
+      setTimeout(listo, 180);
+      setTimeout(() => intro.remove(), 850);
+    };
+    const reloj = setTimeout(salir, 3300);
+    intro.addEventListener('click', () => { clearTimeout(reloj); salir(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { clearTimeout(reloj); salir(); } });
+  } else {
+    if (intro) intro.remove();
+    listo();
+  }
+
+  // ---------- Números que cuentan ----------
+  const contar = (el) => {
+    const fin = +el.dataset.contar;
+    const ini = fin > 1000 ? fin - 120 : 0;
+    const dur = 1400;
+    const t0 = performance.now();
+    const paso = (ahora) => {
+      const k = Math.min(1, (ahora - t0) / dur);
+      const e = 1 - Math.pow(1 - k, 3);
+      el.textContent = Math.round(ini + (fin - ini) * e);
+      if (k < 1) requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
+  };
+  const numeros = $$('[data-contar]');
+  if (numeros.length && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const obsN = new IntersectionObserver((ent) => ent.forEach((x) => {
+      if (x.isIntersecting) { contar(x.target); obsN.unobserve(x.target); }
+    }), { threshold: .6 });
+    numeros.forEach((n) => obsN.observe(n));
+  }
 
   // ---------- Menú móvil ----------
   const boton = $('[data-menu]');

@@ -584,3 +584,50 @@ h3 { font-size: 20px; font-weight: 700; font-stretch: 85%; line-height: 1.15; }
 .wa-flotante:hover { transform: scale(1.07); box-shadow: 0 8px 24px rgba(0,0,0,.28); }
 body.menu-abierto .wa-flotante { display: none; }
 @media (max-width: 600px) { .wa-flotante { right: 14px; bottom: 14px; width: 54px; height: 54px; } }
+
+/* ---------- Intro de hockey (solo la primera vez que se entra) ---------- */
+.intro { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; background: var(--azul); color: #fff; transition: transform .75s cubic-bezier(.77, 0, .18, 1); }
+html.sin-intro .intro { display: none; }
+html.js:not(.sin-intro):not(.listo) body { overflow: hidden; }
+.intro.saliendo { transform: translateY(-100%); }
+.intro-escena { width: min(92vw, 1100px); height: auto; max-height: 70vh; animation: escenaFuera .45s ease 2.45s forwards; }
+.intro .tr { stroke-dasharray: 1; stroke-dashoffset: 1; animation: trazo .75s cubic-bezier(.6, .1, .3, 1) forwards; animation-delay: var(--d, 0s); }
+.intro .palo { transform-box: view-box; transform-origin: 168px 148px; animation: swing .55s cubic-bezier(.5, 0, .2, 1) .85s forwards; }
+.intro .bocha { opacity: 0; animation: aparecer .15s ease .75s forwards, bochaVuela .6s cubic-bezier(.15, .55, .45, 1) 1.3s forwards; }
+.intro .arquera { transform-box: view-box; transform-origin: 711px 350px; animation: tirada .42s cubic-bezier(.3, .7, .3, 1) 1.6s forwards; }
+.intro .red { transform-box: view-box; transform-origin: 742px 257px; animation: redGol .55s ease 1.76s; }
+.intro-marca { position: absolute; display: flex; align-items: center; gap: 18px; opacity: 0; transform: translateY(14px); animation: subir .6s cubic-bezier(.2, .7, .2, 1) 2.6s forwards; }
+.intro-marca .escudo { width: 64px; color: #fff; --escudo-claro: var(--azul); }
+.intro-marca p { margin: 0; display: flex; flex-direction: column; text-transform: uppercase; line-height: .9; }
+.intro-marca span { font-size: 15px; font-weight: 600; font-stretch: 85%; letter-spacing: .16em; }
+.intro-marca strong { font-size: 52px; font-weight: 800; font-stretch: 68%; }
+.intro-saltar { position: absolute; right: 22px; bottom: 22px; padding: 9px 16px; border: 1px solid rgba(255,255,255,.4); background: none; color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; }
+.intro-saltar:hover { background: #fff; color: var(--azul); }
+@keyframes trazo { to { stroke-dashoffset: 0; } }
+@keyframes aparecer { to { opacity: 1; } }
+@keyframes swing { 0% { transform: rotate(0); } 55% { transform: rotate(26deg); } 85% { transform: rotate(-12deg); } 100% { transform: rotate(-7deg); } }
+@keyframes bochaVuela { 0% { transform: translate(0, 0); } 72% { transform: translate(392px, -129px); } 100% { transform: translate(404px, -18px); } }
+@keyframes tirada { to { transform: translate(-16px, 4px) rotate(-14deg); } }
+@keyframes redGol { 0% { transform: none; } 30% { transform: translate(8px, -3px) scale(1.035); } 60% { transform: translate(-3px, 1px); } 100% { transform: none; } }
+@keyframes escenaFuera { to { opacity: 0; transform: scale(.96); } }
+@media (max-width: 700px) {
+  .intro-escena { position: absolute; right: 2vw; top: 50%; width: 140vw; max-height: none; margin-top: -21vw; }
+  .intro .tiro { transform: translateX(235px); }
+  .intro .bocha { animation: aparecer .15s ease .75s forwards, bochaVuelaM .6s cubic-bezier(.15, .55, .45, 1) 1.3s forwards; }
+  .intro-marca strong { font-size: 44px; }
+}
+@keyframes bochaVuelaM { 0% { transform: translate(0, 0); } 72% { transform: translate(157px, -129px); } 100% { transform: translate(169px, -18px); } }
+
+/* ---------- Animaciones de texto ---------- */
+.js .anim { opacity: 0; transform: translateY(22px); }
+html.listo .anim { animation: subir .9s var(--curva) forwards; animation-delay: var(--d, 0s); }
+@keyframes subir { to { opacity: 1; transform: none; } }
+.renglon { display: block; overflow: hidden; padding-top: .14em; margin-top: -.14em; }
+.js .renglon > span { display: block; transform: translateY(112%); }
+html.listo .renglon > span { animation: lineaSube 1.05s cubic-bezier(.2, .8, .2, 1) forwards; animation-delay: var(--d, 0s); }
+@keyframes lineaSube { to { transform: none; } }
+.js .sec-titulo.aparece h2 { clip-path: inset(100% 0 0 0); transform: translateY(18px); transition: clip-path 1s cubic-bezier(.2, .8, .2, 1) .12s, transform 1s cubic-bezier(.2, .8, .2, 1) .12s; }
+.js .sec-titulo.aparece.visible h2 { clip-path: inset(-20% 0 -20% 0); transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .js .anim, .js .renglon > span, .js .sec-titulo.aparece h2 { opacity: 1; transform: none; clip-path: none; }
+}

@@ -73,6 +73,7 @@ const simbolos = `
 <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
 `;
 const escudoSimbolo = readFileSync(join(raiz, 'scripts', 'escudo-symbol.html'), 'utf8');
+const intro = readFileSync(join(raiz, 'scripts', 'intro.html'), 'utf8');
 export const escudo = (clase = 'escudo') => `<svg class="${clase}" aria-hidden="true" viewBox="0 0 612 694"><use href="#escudo"/></svg>`;
 
 // ---------- partes comunes ----------
@@ -209,6 +210,7 @@ function documento(p) {
 <html lang="es-AR">
 <head>
 <meta charset="utf-8">
+<script>(function(d){d.classList.add('js');try{if(sessionStorage.getItem('qh-intro')||matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('sin-intro')}catch(e){d.classList.add('sin-intro')}setTimeout(function(){d.classList.add('listo')},4500)})(document.documentElement)</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(titulo)}</title>
 <meta name="description" content="${esc(p.descripcion)}">
@@ -241,6 +243,7 @@ ${p.precargar ? `<link rel="preload" href="${p.precargar}" as="image" fetchprior
 </head>
 <body class="${p.claseBody || ''}">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">${escudoSimbolo}${simbolos}</svg>
+${p.noindex ? '' : intro}
 ${encabezado(p.nav)}
 <main id="contenido">
 ${p.cuerpo}

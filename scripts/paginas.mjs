@@ -34,9 +34,9 @@ function cabeceraPagina(kicker, h1, bajada, foto) {
   return `<section class="cab-pag">
   <div class="cab-pag-img">${img(foto, '', { carga: 'eager' })}</div>
   <div class="ancho cab-pag-in">
-    <p class="kicker">${kicker}</p>
-    <h1>${h1}</h1>
-    ${bajada ? `<p class="cab-pag-bajada">${bajada}</p>` : ''}
+    <p class="kicker anim" style="--d:.05s">${kicker}</p>
+    <h1><span class="renglon"><span style="--d:.15s">${h1}</span></span></h1>
+    ${bajada ? `<p class="cab-pag-bajada anim" style="--d:.4s">${bajada}</p>` : ''}
   </div>
 </section>`;
 }
@@ -82,10 +82,10 @@ export function paginas({ sitio, contacto, accesos, federaciones, sponsors, nove
       .join('')}
   </div>
   <div class="ancho hero-in">
-    <p class="kicker kicker-claro">Hockey · Desde 1911</p>
-    <h1>Quilmes<br>Atlético Club</h1>
-    <p class="hero-bajada">Damas y caballeros, de la escuelita a primera. Más de cien años jugando al hockey en Quilmes.</p>
-    <div class="hero-pie">
+    <p class="kicker kicker-claro anim" style="--d:.05s">Hockey · Desde 1911</p>
+    <h1><span class="renglon"><span style="--d:.15s">Quilmes</span></span><span class="renglon"><span style="--d:.27s">Atlético Club</span></span></h1>
+    <p class="hero-bajada anim" style="--d:.55s">Damas y caballeros, de la escuelita a primera. Más de cien años jugando al hockey en Quilmes.</p>
+    <div class="hero-pie anim" style="--d:.7s">
       <div class="hero-btns">
         <a class="btn btn-blanco" href="${accesos[0].url}" target="_blank" rel="noopener">Inscribite 2026 ${icono('flecha')}</a>
         <a class="btn btn-linea" href="https://quilmesaclub.accessfan.ar/" target="_blank" rel="noopener">Asociate</a>
@@ -139,10 +139,10 @@ export function paginas({ sitio, contacto, accesos, federaciones, sponsors, nove
       <h2>Más de un siglo de hockey en Quilmes</h2>
       <p>En 1911 el club se afilió a la Asociación Argentina de Hockey sobre Césped. Desde entonces salieron de acá campeonatos, olímpicos, Leonas y Leones.</p>
       <dl class="ht-numeros">
-        <div><dt>1911</dt><dd>Afiliación a la Asociación Argentina</dd></div>
-        <div><dt>800</dt><dd>Jugadoras y jugadores</dd></div>
-        <div><dt>3</dt><dd>Canchas sintéticas</dd></div>
-        <div><dt>33</dt><dd>Títulos de primera</dd></div>
+        <div><dt data-contar="1911">1911</dt><dd>Afiliación a la Asociación Argentina</dd></div>
+        <div><dt data-contar="800">800</dt><dd>Jugadoras y jugadores</dd></div>
+        <div><dt data-contar="3">3</dt><dd>Canchas sintéticas</dd></div>
+        <div><dt data-contar="33">33</dt><dd>Títulos de primera</dd></div>
       </dl>
       <a class="ver-todo ver-todo-claro" href="/historia">Conocé la historia ${icono('flecha')}</a>
     </div>
